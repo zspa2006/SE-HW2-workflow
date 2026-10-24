@@ -1,0 +1,9 @@
+{
+  "entry": "analyze",
+  "routes": {
+    "analyze": {"next": "audit"},
+    "audit": {"next": "write"},
+    "write": {"next": "review"},
+    "review": {"pass": "END", "revise": "write"}
+  }
+}

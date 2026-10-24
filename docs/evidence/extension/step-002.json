@@ -1,0 +1,13 @@
+{
+  "node": "audit",
+  "artifact": "audit",
+  "outcome": "next",
+  "data": {
+    "file_count": 2,
+    "interface_count": 5,
+    "files": [
+      "orders.py",
+      "pricing.py"
+    ]
+  }
+}
