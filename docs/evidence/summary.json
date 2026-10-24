@@ -1,0 +1,33 @@
+{
+  "scenarios": [
+    {
+      "scenario": "normal",
+      "run_id": "20261024T095820Z-6b122f24",
+      "status": "succeeded",
+      "steps": 3,
+      "revisions": 0,
+      "report": "normal/report.html"
+    },
+    {
+      "scenario": "revision",
+      "run_id": "20261024T095820Z-74293680",
+      "status": "succeeded",
+      "steps": 5,
+      "revisions": 1,
+      "report": "revision/report.html"
+    },
+    {
+      "scenario": "recovery",
+      "run_id": "20261024T095820Z-b4a21b89",
+      "status": "succeeded",
+      "steps": 3,
+      "revisions": 0,
+      "report": "recovery/report.html",
+      "before_resume": {
+        "status": "paused",
+        "current": "write",
+        "steps": 1
+      }
+    }
+  ]
+}

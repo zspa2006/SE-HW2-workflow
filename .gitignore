@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+!.env.example
+runs/
+dist/
+*.tmp
+*.log
+.run.lock
+提交/
+repository.bundle

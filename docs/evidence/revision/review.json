@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "issues": [],
+  "summary": "未启用模型语义审校，仅完成确定性结构与证据检查。",
+  "revision": 1,
+  "expected_interfaces": 5,
+  "documented_interfaces": 5
+}

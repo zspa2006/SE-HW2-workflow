@@ -1,0 +1,93 @@
+{
+  "node": "analyze",
+  "artifact": "analysis",
+  "outcome": "next",
+  "data": {
+    "files": [
+      {
+        "path": "pricing.py",
+        "sha256": "8d15ce9841416dead504a376c11a1b3d91639a7d6f7264dab865b75d2fae74b0",
+        "lines": 24,
+        "source": "\"\"\"购物车计价示例。使用 Decimal 保留金额精度，订单服务调用此模块。\"\"\"\n\nfrom decimal import Decimal, ROUND_HALF_UP\n\n\ndef total_price(prices: list[Decimal], discount: Decimal = Decimal(\"1\")) -> Decimal:\n    \"\"\"计算折后总价并保留两位小数。\n\n    prices 必须全部非负，discount 必须处于闭区间 [0, 1]。\n    空购物车返回 Decimal('0.00')。非法金额或折扣引发 ValueError。\n    \"\"\"\n    if not Decimal(\"0\") <= discount <= Decimal(\"1\"):\n        raise ValueError(\"折扣必须位于 0 与 1 之间\")\n    if any(price < 0 for price in prices):\n        raise ValueError(\"价格不能为负\")\n    amount = sum(prices, start=Decimal(\"0\")) * discount\n    return amount.quantize(Decimal(\"0.01\"), rounding=ROUND_HALF_UP)\n\n\ndef shipping_fee(amount: Decimal, threshold: Decimal = Decimal(\"99\")) -> Decimal:\n    \"\"\"满 threshold 元免运费，否则收取 6 元。金额及免邮门槛不能为负数。\"\"\"\n    if amount < 0 or threshold < 0:\n        raise ValueError(\"金额与免邮门槛不能为负\")\n    return Decimal(\"0.00\") if amount >= threshold else Decimal(\"6.00\")\n",
+        "module_doc": "购物车计价示例。使用 Decimal 保留金额精度，订单服务调用此模块。",
+        "imports": [
+          "decimal"
+        ],
+        "symbols": [
+          {
+            "id": "pricing.py::total_price",
+            "name": "total_price",
+            "kind": "function",
+            "signature": "total_price(prices: list[Decimal], discount: Decimal=Decimal('1')) -> Decimal",
+            "line": 6,
+            "end_line": 17,
+            "docstring": "计算折后总价并保留两位小数。\n\nprices 必须全部非负，discount 必须处于闭区间 [0, 1]。\n空购物车返回 Decimal('0.00')。非法金额或折扣引发 ValueError。",
+            "raises": [
+              "ValueError"
+            ]
+          },
+          {
+            "id": "pricing.py::shipping_fee",
+            "name": "shipping_fee",
+            "kind": "function",
+            "signature": "shipping_fee(amount: Decimal, threshold: Decimal=Decimal('99')) -> Decimal",
+            "line": 20,
+            "end_line": 24,
+            "docstring": "满 threshold 元免运费，否则收取 6 元。金额及免邮门槛不能为负数。",
+            "raises": [
+              "ValueError"
+            ]
+          }
+        ]
+      },
+      {
+        "path": "orders.py",
+        "sha256": "6cdebf41a13dd1cc70189904712f8cededb6d28335793ae639fd82602dcc68a9",
+        "lines": 26,
+        "source": "\"\"\"订单汇总示例。展示跨文件依赖、类方法、异常与业务边界。\"\"\"\n\nfrom dataclasses import dataclass\nfrom decimal import Decimal\n\nfrom .pricing import shipping_fee, total_price\n\n\n@dataclass(frozen=True)\nclass Order:\n    \"\"\"不可变订单，包含订单编号和商品价格元组。\"\"\"\n\n    number: str\n    prices: tuple[Decimal, ...]\n\n    def payable(self, discount: Decimal = Decimal(\"1\")) -> Decimal:\n        \"\"\"返回折后商品金额加运费。空订单拒绝支付并引发 ValueError。\"\"\"\n        if not self.prices:\n            raise ValueError(\"空订单不能支付\")\n        subtotal = total_price(list(self.prices), discount)\n        return subtotal + shipping_fee(subtotal)\n\n\ndef summarize(order: Order) -> dict[str, str]:\n    \"\"\"将订单编号与应付金额转为便于显示的字符串字典。\"\"\"\n    return {\"number\": order.number, \"payable\": str(order.payable())}\n",
+        "module_doc": "订单汇总示例。展示跨文件依赖、类方法、异常与业务边界。",
+        "imports": [
+          ".pricing",
+          "dataclasses",
+          "decimal"
+        ],
+        "symbols": [
+          {
+            "id": "orders.py::Order",
+            "name": "Order",
+            "kind": "class",
+            "signature": "class Order",
+            "line": 10,
+            "end_line": 21,
+            "docstring": "不可变订单，包含订单编号和商品价格元组。",
+            "raises": []
+          },
+          {
+            "id": "orders.py::Order.payable",
+            "name": "Order.payable",
+            "kind": "function",
+            "signature": "payable(self, discount: Decimal=Decimal('1')) -> Decimal",
+            "line": 16,
+            "end_line": 21,
+            "docstring": "返回折后商品金额加运费。空订单拒绝支付并引发 ValueError。",
+            "raises": [
+              "ValueError"
+            ]
+          },
+          {
+            "id": "orders.py::summarize",
+            "name": "summarize",
+            "kind": "function",
+            "signature": "summarize(order: Order) -> dict[str, str]",
+            "line": 24,
+            "end_line": 26,
+            "docstring": "将订单编号与应付金额转为便于显示的字符串字典。",
+            "raises": []
+          }
+        ]
+      }
+    ],
+    "mode": "offline",
+    "summary": "静态分析了 2 个 Python 文件，提取 5 个公开定义（含类与方法）。"
+  }
+}

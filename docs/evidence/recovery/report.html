@@ -1,0 +1,130 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">
+<title>DocFlow 工作流执行报告</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f4f6f8;color:#182b3a;font:16px/1.7 'Microsoft YaHei',sans-serif}
+main{max-width:1120px;margin:48px auto;padding:0 28px}header{border-top:6px solid #087f8c;padding:22px 0}
+h1{font-size:38px;margin:0}h2{font-size:24px;margin-top:34px}p{margin:8px 0}.tag{color:#087f8c;font-weight:bold}
+table{width:100%;border-collapse:collapse;background:white;font-size:14px}td,th{text-align:left;padding:12px;border-bottom:1px solid #d9e1e7}
+.scroll{overflow:auto}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:white;padding:24px;border:1px solid #d9e1e7;font:14px/1.8 Consolas,'Microsoft YaHei',monospace}
+.muted{color:#576b7c}.error{color:#a12736}footer{margin:36px 0;color:#576b7c}
+@media(max-width:650px){main{margin:20px auto;padding:0 16px}h1{font-size:30px}pre{padding:16px}}
+</style><main><header><p class="tag">SOFTWARE PROJECT MANAGEMENT / HOMEWORK 2</p>
+<h1>DocFlow 代码文档工作流</h1><p>分析 Agent → 文档 Agent → 审校 Agent；不通过时返回文档 Agent。</p>
+<p class="tag">执行成功</p><p class="muted">模式 offline · 已提交 3 个节点 · 返修 0 次</p>
+<p class="muted">运行编号 20261024T095820Z-b4a21b89</p></header>
+<p class="error"></p><h2>Agent 协作消息</h2><div class="scroll"><table><thead><tr>
+<th>消息</th><th>发送者</th><th>接收者</th><th>产物</th><th>结果</th><th>说明</th></tr></thead><tbody><tr><td>msg-001</td><td>analyze</td><td>write</td><td>analysis</td><td>next</td><td>代码结构和源码证据已发送给文档 Agent。</td></tr><tr><td>msg-002</td><td>write</td><td>review</td><td>draft</td><td>next</td><td>文档第 1 版已发送审校。</td></tr><tr><td>msg-003</td><td>review</td><td>END</td><td>review</td><td>pass</td><td>审校通过。</td></tr></tbody></table></div>
+<h2>审校结果</h2><p>未启用模型语义审校，仅完成确定性结构与证据检查。</p><ul></ul>
+<h2>文档内容</h2><pre># 代码说明文档
+
+生成模式：offline。基于静态分析，未执行输入代码。
+
+## 项目概览
+
+静态分析了 2 个 Python 文件，提取 5 个公开定义（含类与方法）。
+
+## 文件结构
+
+以下列出本次选择的文件。未选择的依赖文件不在本次分析范围内。
+
+- `pricing.py`：24 行；SHA-256 `8d15ce9841416dead504a376c11a1b3d91639a7d6f7264dab865b75d2fae74b0`。
+  模块说明：购物车计价示例。使用 Decimal 保留金额精度，订单服务调用此模块。
+  导入：decimal。
+
+- `orders.py`：26 行；SHA-256 `6cdebf41a13dd1cc70189904712f8cededb6d28335793ae639fd82602dcc68a9`。
+  模块说明：订单汇总示例。展示跨文件依赖、类方法、异常与业务边界。
+  导入：.pricing, dataclasses, decimal。
+
+## 接口说明
+
+公开定义及其类方法如下。下划线开头的内部定义除 __init__ 外不纳入接口清单。
+
+### total_price
+
+```python
+total_price(prices: list[Decimal], discount: Decimal=Decimal(&#x27;1&#x27;)) -&gt; Decimal
+```
+
+计算折后总价并保留两位小数。
+
+prices 必须全部非负，discount 必须处于闭区间 [0, 1]。
+空购物车返回 Decimal(&#x27;0.00&#x27;)。非法金额或折扣引发 ValueError。
+
+证据：`pricing.py:L6-L17`。
+
+源码出现的 raise 表达式：`ValueError`。
+
+### shipping_fee
+
+```python
+shipping_fee(amount: Decimal, threshold: Decimal=Decimal(&#x27;99&#x27;)) -&gt; Decimal
+```
+
+满 threshold 元免运费，否则收取 6 元。金额及免邮门槛不能为负数。
+
+证据：`pricing.py:L20-L24`。
+
+源码出现的 raise 表达式：`ValueError`。
+
+### Order
+
+```python
+class Order
+```
+
+不可变订单，包含订单编号和商品价格元组。
+
+证据：`orders.py:L10-L21`。
+
+### Order.payable
+
+```python
+payable(self, discount: Decimal=Decimal(&#x27;1&#x27;)) -&gt; Decimal
+```
+
+返回折后商品金额加运费。空订单拒绝支付并引发 ValueError。
+
+证据：`orders.py:L16-L21`。
+
+源码出现的 raise 表达式：`ValueError`。
+
+### summarize
+
+```python
+summarize(order: Order) -&gt; dict[str, str]
+```
+
+将订单编号与应付金额转为便于显示的字符串字典。
+
+证据：`orders.py:L24-L26`。
+
+## 使用与边界
+
+调用参数以签名为准。以下说明来自静态证据；不保证运行时行为、依赖可用性或业务正确性。docstring 由输入代码作者提供，应对照实现核实。
+
+## 验证建议
+
+对正常输入、边界值和异常路径分别编写测试。本文没有执行输入代码，也没有宣称测试已经通过。
+</pre>
+<details><summary>原始执行事件（JSONL）</summary><pre>{&quot;time&quot;: &quot;2026-10-24T09:58:20.348+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;workflow_started&quot;, &quot;node&quot;: &quot;analyze&quot;, &quot;revision&quot;: 0}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.349+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;node_started&quot;, &quot;node&quot;: &quot;analyze&quot;, &quot;revision&quot;: 0, &quot;detail&quot;: &quot;执行 analyze&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.350+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;tool_started&quot;, &quot;node&quot;: &quot;analyze&quot;, &quot;revision&quot;: 0, &quot;tool&quot;: &quot;read_file&quot;, &quot;path&quot;: &quot;pricing.py&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.351+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;tool_succeeded&quot;, &quot;node&quot;: &quot;analyze&quot;, &quot;revision&quot;: 0, &quot;tool&quot;: &quot;read_file&quot;, &quot;path&quot;: &quot;pricing.py&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.351+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;tool_started&quot;, &quot;node&quot;: &quot;analyze&quot;, &quot;revision&quot;: 0, &quot;tool&quot;: &quot;ast.parse&quot;, &quot;path&quot;: &quot;pricing.py&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.352+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;tool_succeeded&quot;, &quot;node&quot;: &quot;analyze&quot;, &quot;revision&quot;: 0, &quot;tool&quot;: &quot;ast.parse&quot;, &quot;path&quot;: &quot;pricing.py&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.353+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;tool_started&quot;, &quot;node&quot;: &quot;analyze&quot;, &quot;revision&quot;: 0, &quot;tool&quot;: &quot;read_file&quot;, &quot;path&quot;: &quot;orders.py&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.353+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;tool_succeeded&quot;, &quot;node&quot;: &quot;analyze&quot;, &quot;revision&quot;: 0, &quot;tool&quot;: &quot;read_file&quot;, &quot;path&quot;: &quot;orders.py&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.354+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;tool_started&quot;, &quot;node&quot;: &quot;analyze&quot;, &quot;revision&quot;: 0, &quot;tool&quot;: &quot;ast.parse&quot;, &quot;path&quot;: &quot;orders.py&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.354+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;tool_succeeded&quot;, &quot;node&quot;: &quot;analyze&quot;, &quot;revision&quot;: 0, &quot;tool&quot;: &quot;ast.parse&quot;, &quot;path&quot;: &quot;orders.py&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.358+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;node_succeeded&quot;, &quot;node&quot;: &quot;analyze&quot;, &quot;revision&quot;: 0, &quot;outcome&quot;: &quot;next&quot;, &quot;target&quot;: &quot;write&quot;, &quot;detail&quot;: &quot;代码结构和源码证据已发送给文档 Agent。&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.363+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;workflow_paused&quot;, &quot;node&quot;: &quot;write&quot;, &quot;revision&quot;: 0, &quot;detail&quot;: &quot;已保存 analyze 节点检查点。&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.368+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;workflow_started&quot;, &quot;node&quot;: &quot;write&quot;, &quot;revision&quot;: 0}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.370+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;node_started&quot;, &quot;node&quot;: &quot;write&quot;, &quot;revision&quot;: 0, &quot;detail&quot;: &quot;执行 write&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.372+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;node_succeeded&quot;, &quot;node&quot;: &quot;write&quot;, &quot;revision&quot;: 0, &quot;outcome&quot;: &quot;next&quot;, &quot;target&quot;: &quot;review&quot;, &quot;detail&quot;: &quot;文档第 1 版已发送审校。&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.377+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;node_started&quot;, &quot;node&quot;: &quot;review&quot;, &quot;revision&quot;: 0, &quot;detail&quot;: &quot;执行 review&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.377+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;tool_succeeded&quot;, &quot;node&quot;: &quot;review&quot;, &quot;revision&quot;: 0, &quot;tool&quot;: &quot;validate_document&quot;, &quot;issues&quot;: 0}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.381+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;node_succeeded&quot;, &quot;node&quot;: &quot;review&quot;, &quot;revision&quot;: 0, &quot;outcome&quot;: &quot;pass&quot;, &quot;target&quot;: &quot;END&quot;, &quot;detail&quot;: &quot;审校通过。&quot;}
+{&quot;time&quot;: &quot;2026-10-24T09:58:20.393+00:00&quot;, &quot;run_id&quot;: &quot;20261024T095820Z-b4a21b89&quot;, &quot;event&quot;: &quot;workflow_succeeded&quot;, &quot;node&quot;: &quot;END&quot;, &quot;revision&quot;: 0, &quot;detail&quot;: &quot;最终文档与审校报告已保存。&quot;}
+</pre></details>
+<footer>潘彦博 · 2404080334<br>本报告在本地打开，无需联网。源码只做静态分析，未执行输入程序。</footer></main></html>

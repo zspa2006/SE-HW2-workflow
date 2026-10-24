@@ -1,0 +1,47 @@
+test_all_three_agents_use_backend_end_to_end (test_backend.BackendTests.test_all_three_agents_use_backend_end_to_end) ... ok
+test_auth_failure_not_retried_or_leaked (test_backend.BackendTests.test_auth_failure_not_retried_or_leaked) ... ok
+test_backend_identity_change_rejected_on_resume (test_backend.BackendTests.test_backend_identity_change_rejected_on_resume) ... ok
+test_malformed_json_response_is_retryable (test_backend.BackendTests.test_malformed_json_response_is_retryable) ... ok
+test_request_contract (test_backend.BackendTests.test_request_contract) ... ok
+test_response_schema_missing_fields (test_backend.BackendTests.test_response_schema_missing_fields) ... ok
+test_retryable_http_statuses (test_backend.BackendTests.test_retryable_http_statuses) ... ok
+test_url_and_credentials_validation (test_backend.BackendTests.test_url_and_credentials_validation) ... ok
+test_add_new_node_without_engine_changes (test_workflow.ReviewAndExtensionTests.test_add_new_node_without_engine_changes) ... ok
+test_end_without_review_does_not_publish (test_workflow.ReviewAndExtensionTests.test_end_without_review_does_not_publish) ... ok
+test_invalid_graphs_rejected (test_workflow.ReviewAndExtensionTests.test_invalid_graphs_rejected) ... ok
+test_reviewer_catches_omissions_unknown_duplicates_and_wrong_evidence (test_workflow.ReviewAndExtensionTests.test_reviewer_catches_omissions_unknown_duplicates_and_wrong_evidence) ... ok
+test_ambiguous_public_redefinitions_rejected (test_workflow.ToolsTests.test_ambiguous_public_redefinitions_rejected) ... ok
+test_ast_methods_async_keyword_arguments_and_no_execution (test_workflow.ToolsTests.test_ast_methods_async_keyword_arguments_and_no_execution) ... ok
+test_binary_large_and_bad_encoding_rejected (test_workflow.ToolsTests.test_binary_large_and_bad_encoding_rejected) ... ok
+test_empty_module_is_valid (test_workflow.ToolsTests.test_empty_module_is_valid) ... ok
+test_escape_absolute_and_traversal_rejected (test_workflow.ToolsTests.test_escape_absolute_and_traversal_rejected) ... ok
+test_input_budget_rejected (test_workflow.ToolsTests.test_input_budget_rejected) ... ok
+test_missing_directory_empty_duplicate_and_non_python (test_workflow.ToolsTests.test_missing_directory_empty_duplicate_and_non_python) ... ok
+test_original_source_is_available_for_model_reasoning (test_workflow.ToolsTests.test_original_source_is_available_for_model_reasoning) ... ok
+test_symlink_escape_rejected (test_workflow.ToolsTests.test_symlink_escape_rejected) ... skipped '当前 Windows 会话没有创建符号链接的权限'
+test_agent_cannot_mutate_shared_state (test_workflow.WorkflowTests.test_agent_cannot_mutate_shared_state) ... ok
+test_changed_source_rejected_on_resume (test_workflow.WorkflowTests.test_changed_source_rejected_on_resume) ... ok
+test_cli_run_inspect_and_resume (test_workflow.WorkflowTests.test_cli_run_inspect_and_resume) ... ok
+test_corrupt_checkpoint_rejected (test_workflow.WorkflowTests.test_corrupt_checkpoint_rejected) ... ok
+test_custom_node_crash_saves_failed_checkpoint (test_workflow.WorkflowTests.test_custom_node_crash_saves_failed_checkpoint) ... ok
+test_invalid_syntax_no_retry (test_workflow.WorkflowTests.test_invalid_syntax_no_retry) ... ok
+test_lock_prevents_two_writers (test_workflow.WorkflowTests.test_lock_prevents_two_writers) ... ok
+test_pause_after_draft_has_no_final_output (test_workflow.WorkflowTests.test_pause_after_draft_has_no_final_output) ... ok
+test_pause_resume_skips_completed_analysis (test_workflow.WorkflowTests.test_pause_resume_skips_completed_analysis) ... ok
+test_permanent_error_checkpoint_can_resume_after_fix (test_workflow.WorkflowTests.test_permanent_error_checkpoint_can_resume_after_fix) ... ok
+test_portable_resume_with_new_root (test_workflow.WorkflowTests.test_portable_resume_with_new_root) ... ok
+test_real_revision_feedback_and_history (test_workflow.WorkflowTests.test_real_revision_feedback_and_history) ... ok
+test_report_escapes_untrusted_content (test_workflow.WorkflowTests.test_report_escapes_untrusted_content) ... ok
+test_revision_exhaustion_is_terminal_across_resume (test_workflow.WorkflowTests.test_revision_exhaustion_is_terminal_across_resume) ... ok
+test_runtime_step_limit_stops_cycle (test_workflow.WorkflowTests.test_runtime_step_limit_stops_cycle) ... ok
+test_schema_version_rejected (test_workflow.WorkflowTests.test_schema_version_rejected) ... ok
+test_source_change_during_execution_blocks_publish (test_workflow.WorkflowTests.test_source_change_during_execution_blocks_publish) ... ok
+test_successful_resume_is_idempotent (test_workflow.WorkflowTests.test_successful_resume_is_idempotent) ... ok
+test_three_agents_end_to_end (test_workflow.WorkflowTests.test_three_agents_end_to_end) ... ok
+test_transient_error_retried_without_partial_messages (test_workflow.WorkflowTests.test_transient_error_retried_without_partial_messages) ... ok
+test_transient_retry_exhaustion (test_workflow.WorkflowTests.test_transient_retry_exhaustion) ... ok
+
+----------------------------------------------------------------------
+Ran 42 tests in 6.277s
+
+OK (skipped=1)
