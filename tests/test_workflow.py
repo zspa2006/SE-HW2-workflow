@@ -253,6 +253,26 @@ class WorkflowTests(Workspace):
         self.assertIn("&lt;script&gt;", page)
         self.assertIn("{status}", page)  # User text is never substituted a second time.
 
+    def test_report_keeps_first_review_feedback_after_success(self):
+        workflow = self.workflow(demo_revision=True)
+        workflow.execute()
+        page = write_report(workflow.directory, workflow.state).read_text(encoding="utf-8")
+        self.assertIn("本轮审校：不通过", page)
+        self.assertIn("缺少章节：验证建议", page)
+        self.assertIn("本轮审校：通过", page)
+        self.assertIn("文档版本：第 1 版", page)
+        self.assertIn("文档版本：第 2 版", page)
+
+    def test_report_handles_missing_or_corrupt_history(self):
+        workflow = self.workflow()
+        workflow.execute()
+        (workflow.directory / "step-001.json").unlink()
+        (workflow.directory / "step-002.json").write_text("<script>broken</script>", encoding="utf-8")
+        page = write_report(workflow.directory, workflow.state).read_text(encoding="utf-8")
+        self.assertIn("结果文件缺失或无法读取", page)
+        self.assertIn("执行成功", page)
+        self.assertNotIn("<script>", page)
+
     def test_cli_run_inspect_and_resume(self):
         environment = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
         command = [sys.executable, "-m", "docflow"]

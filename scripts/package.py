@@ -8,7 +8,7 @@ from pathlib import Path
 import zipfile
 
 PROJECT = Path(__file__).resolve().parents[1]
-FILES = ("README.md", "Design.md", "Desgin.md", "requirements.txt", ".gitignore", ".gitattributes", ".env.example")
+FILES = ("main.py", "README.md", "Design.md", "Desgin.md", "requirements.txt", ".gitignore", ".gitattributes", ".env.example")
 DIRECTORIES = ("docflow", "tests", "examples", "docs", "scripts")
 ALLOWED_SUFFIXES = {".py", ".json", ".jsonl", ".md", ".txt", ".html", ".png", ".mp4"}
 PREFIX = "2404080334潘彦博/docflow-workflow"

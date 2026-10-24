@@ -23,6 +23,14 @@
 在项目文件夹打开 PowerShell，执行：
 
 ```powershell
+python main.py
+```
+
+菜单中可以选择运行示例、演示返修、演示恢复，或者分析自己的文件。示例默认使用离线模式，不需要密钥。
+
+也可以直接使用带参数的命令：
+
+```powershell
 python -m docflow run --root examples/shop --files pricing.py orders.py
 ```
 
@@ -46,6 +54,8 @@ python -m docflow run --root examples/shop --files pricing.py orders.py
 | `step-*.json` | 每次节点完成时保存的结果，包括返修前后的版本 |
 
 也可以先查看已经生成的 [正常运行报告](docs/evidence/normal/report.html) 和 [54 秒演示视频](docs/演示视频.mp4)。视频使用中文字幕，无旁白。
+
+报告中的“每一步的结果”可以展开查看分析结果、各版草稿和审校意见。例如返修成功后，仍能看到第一轮为什么没有通过。
 
 ## 3. 演示返修流程
 
@@ -124,11 +134,12 @@ python scripts/extend_demo.py
 python -m unittest discover -s tests -v
 ```
 
-共 42 项测试，41 项通过，1 项因当前 Windows 环境没有创建符号链接的权限而跳过。主要检查完整流程、Agent 消息、返修、恢复、异常处理和新增节点。详细结果见 [测试报告](docs/测试报告.md)。
+共 44 项测试，43 项通过，1 项因当前 Windows 环境没有创建符号链接的权限而跳过。主要检查完整流程、Agent 消息、返修、恢复、异常处理和新增节点。详细结果见 [测试报告](docs/测试报告.md)。
 
 ## 8. 文件结构
 
 ```text
+main.py          菜单入口
 docflow/          Agent、流程引擎、安全读取、模型接口和命令行
 examples/         待分析代码与流程配置
 tests/            自动测试
