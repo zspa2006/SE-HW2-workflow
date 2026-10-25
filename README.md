@@ -53,7 +53,7 @@ python -m docflow run --root examples/shop --files pricing.py orders.py
 | `events.jsonl` | 执行日志和工具调用记录 |
 | `step-*.json` | 每次节点完成时保存的结果，包括返修前后的版本 |
 
-也可以先查看已经生成的 [正常运行报告](docs/evidence/normal/report.html) 和 [54 秒演示视频](docs/演示视频.mp4)。视频使用中文字幕，无旁白。
+也可以先查看已经生成的 [正常运行报告](docs/evidence/normal/report.html) 和 [实际操作演示视频](docs/演示视频.mp4)。视频约 59 秒，展示选择 Python 文件、运行工作流和查看生成文档的过程。
 
 报告中的“每一步的结果”可以展开查看分析结果、各版草稿和审校意见。例如返修成功后，仍能看到第一轮为什么没有通过。
 
